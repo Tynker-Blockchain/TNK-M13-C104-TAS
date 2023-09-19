@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="{{ '/static/css/style.css' }}" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid row" style="height: 100vh; overflow: scroll;">
+        <div class="col-12 d-flex justify-content-center align-items-center">
+
+            <div class="card text-center" id="card2" style="width: 60%;">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        {% if isConnected%}
+                        <span class="status-circle status-connected"></span>
+                        Connected
+                        {% else %}
+                        <span class="status-circle status-disconnected"></span>
+                        Disconnect
+                        {% endif %}
+                    </div>
+                    {% if isSignedIn %}
+                    <div class="d-flex gap-2">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Accounts
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {% for account in allAccounts %}
+                            <a href={{"/changeAccount" + "?address="+ (allAccounts.index(account)|string)}} style="text-decoration: none">
+                                <span class=" dropdown-item ph-5">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/2048px-Ethereum-icon-purple.svg.png"
+                                        alt="Option 1" class="img-fluid" width="30px" height="30px">
+                                    {#account['address']#}
+                                    {{ account['accountName'] if account['accountName'] else account['address'] }}
+                                </span>
+                            </a>
+                            
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <form action="{{url_for('createAccount')}}" method="post" >
+                        <button type="submit" class="btn btn-warning" >
+                            Create Account Address
+                        </button>
+                    </form>
+                </div>
+                    <form action="{{url_for('signOut')}}" method="post" >
+                        <button type="submit" class="btn btn-danger" >
+                            Sign Out
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+                {% if isSignedIn %}
+                <div class="card-body d-flex flex-column g-3 align-items-center gap-3">
+                    <div>   
+                        <span class="card-rounded-span" id="accountAddress">
+                            
+                            {{ account['accountName'] if account['accountName'] else account['address'] }}
+                            {#account.address#}</span>
+                   <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-left: 10px;">
+                            Rename
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Rename Address</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                <form action="{{url_for('renameAccount')}}" method="post">
+                                    <input type="text" class="w-100" name="name"/>
+                                    <input type="submit" value="Save" class="btn btn-primary">
+                                </form>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+  
+  
+                    </div>
+                    <h5 class="card-title" id="accountBalance">{{balance}} ETH</h5>
+                    <div class="row justify-content-center w-100">
+                        <div class="option-button col-12">
+                            <form action="{{url_for('makeTransaction', form='w1')}}" method="post" id="form1" style="width: 80%;">
+                                <div class="row g-2">    
+                                    <!-- <div class="col-12">
+                                        <input class="col-4 form-control w-100" type="text" placeholder="Sender Address"
+                                    name="senderAddress" id="senderAddress">
+                                    </div>   -->
+
+                                    <div class="col-7">
+                                        <input class="col-4 form-control w-100" type="text" 
+                                               placeholder="Receiver Address"
+                                               name="receiverAddress" id="receiverAddress"
+                                               {%if receiverAddress%}
+                                                value = {{receiverAddress}}
+                                                {%endif%}
+                                               >
+                                    </div>       
+                                            
+                                    <div class="col-3">    
+                                        <input class="col-3 form-control w-100" type="text" placeholder="Amount"
+                                        name="amount" id="amount" 
+                                        {%if tnxAmount%}
+                                                value = {{tnxAmount}}
+                                        {%endif%}>
+                                    </div>  
+                                    
+                                    <div class="col-2">
+                                        <button type="submit" class="btn btn-primary" onclick="sendTransaction()">
+                                            <i class="bi bi-send"></i>
+                                            Send
+                                        </button> 
+                                    </div>                         
+                                </div>    
+                            </form>
+                        </div>
+                    </div>
+
+                    
+                    <div class="container tnxContainer">
+                        <div class="tnxHeader">
+                            <b style="font-size: 16px;">Transactions</b>
+                        </div>
+                        <div class="container tnxBorder" style="overflow: scroll; height:230px">
+                                {% if transactions%}
+                                {% for transaction in transactions%}
+                                    <div class="row justify-content-between g-1 tnx rounded-4">
+                                        <div class="col-1">
+                                            {% if transaction['to'] == account.address%}
+                                            <i class="bi bi-send-fill" style="color:white;" id="rotateIcon"></i>
+                                            {% else %}
+                                                <i class="bi bi-send-fill" style="color:white"></i>
+                                            {% endif %}
+                                            
+                                        </div>
+                                        <div class="col-9 text-start " style="font-size: 14px; color:white">
+                                            <div>
+                                                <b style="font-size: 16px;">
+                                                    {% if transaction['to'] == account.address%}
+                                                       Received
+                                                    {% else %}
+                                                       Sent
+                                                    {% endif %}
+                                                
+                                                </b>
+                                            </div>
+                                            <div>
+                                                <span>To: {{transaction['to']}}</span>
+                                            </div>
+                                            <div>
+                                                <span>From: {{transaction['from']}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 d-flex justify-content-center align-items-center">
+                                            <span class="badge">{{transaction['amount']}} ETH</span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                {% endif %}                            
+                        </div>
+                    </div>
+
+
+
+                </div>
+                {% else %}
+                <div class="card-body d-flex justify-content-center align-items-center flex-column gap-5">
+                    <img src="../static/assets/logo2.png" style="width: 100px "/>
+                   <form action="{{url_for('signIn')}}" method="post" class="d-flex flex-column col-6 justify-content-center align-items-center gap-3">
+                        <input class="col-4 form-control w-100" type="text" placeholder="Username"
+                            name="user">
+                        <input class="col-4 form-control w-100" type="text" placeholder="Password"
+                            name="password">
+                                    
+                        <button type="submit" class="btn btn-primary mt-2 w-50" >
+                            <!-- <i class="bi bi-send"></i> -->
+                            Sign In
+                        </button>
+                    </form>
+            
+                </div>
+                
+                {% endif %}
+            </div>
+        </div>
+         {% if isSignedIn%}
+        <div class="container d-flex justify-content-center align-items-center gap-3 mt-3">
+            <div id="Transactions-chart"></div>
+            <!--SA3: Create div with id Transactions-Line-chart-->
+            <div id="Transactions-Line-chart"></div>
+            <script>
+                
+                transactionData ={{transactionData | tojson }}
+                transactionData = JSON.parse(transactionData)
+                Plotly.newPlot('Transactions-chart', transactionData.trace, transactionData.layout);
+
+                
+                //SA3: Create balanceData variable and store balanceData in JSON format using Jinja
+                balanceData ={{balanceData | tojson }}
+                //SA3: Convert balanceData to javascript object
+                balanceData = JSON.parse(balanceData)
+                //SA3: Use plotly to plot the graph in "Transactions-Line-chart" div
+                Plotly.newPlot('Transactions-Line-chart', balanceData.trace, balanceData.layout);
+                    
+            </script> 
+        </div>
+        {% endif%}
+
+    </div>
+
+ 
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
+
+
