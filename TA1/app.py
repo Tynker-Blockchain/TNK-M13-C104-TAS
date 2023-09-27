@@ -219,26 +219,26 @@ def checkPaymentStatus():
     
     return jsonify(paymentStatus)
 
-# SA1: Create route /renameAccount
+#  Create route /renameAccount
 @app.route('/renameAccount', methods= ["GET", "POST"])
-# SA1: Define renameAccount() function
+#  Define renameAccount() function
 def renameAccount():
-    # SA1: Access account and myWallet as global
+    #  Access account and myWallet as global
     global myWallet, account
     
-    # SA1: Get the 'name' field from form and save it in accountName
+    #  Get the 'name' field from form and save it in accountName
     accountName = request.form.get("name")
 
-    # SA1: Get account address in address variable note: check if account is dict or object and accordingly access address
+    #  Get account address in address variable note: check if account is dict or object and accordingly access address
     if(type(account) == dict):
         address= account['address']
     else:
         address= account.address
     
-    # SA1: Call addAccountName method and pass accountName and address
+    #  Call addAccountName method and pass accountName and address
     myWallet.addAccountName(accountName, address)
 
-    # SA1: Redirect to '/' route
+    #  Redirect to '/' route
     return redirect('/')
     
 if __name__ == '__main__':
