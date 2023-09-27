@@ -89,11 +89,11 @@ class Wallet():
         return True
     
     
-    # SA1: Define addAccountName method that accepts two parameters name, address
+    # : Define addAccountName method that accepts two parameters name, address
     def addAccountName(self, name, address):
-        # SA1: Create reference to account/address
+        # : Create reference to account/address
         ref = db.reference("accounts/" + address + "/")
-        # SA1: Use update function on reference to update the accountName
+        # : Use update function on reference to update the accountName
         ref.update({
             "accountName": name
         })
