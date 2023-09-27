@@ -1,0 +1,205 @@
+/* Custom CSS styles go here */
+
+
+body {
+    background-color: #f8f9fa;
+    background-image: url('../assets/bg.png');
+    background-position: center center;
+    background-repeat: repeat;
+    background-size: 100% auto;
+    color: white;
+  }
+  
+  .status-circle {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+  }
+  
+  .status-connected {
+      background-color: rgb(0, 243, 0);
+  }
+  
+  .status-disconnected{
+      background-color: red;
+  }
+  
+  .dropdown-item img {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+  }
+  .dropdown-menu{
+    width: max-content;
+  }
+  
+  .card-header{
+      background-color: rgba(118,55,190, 0.8);
+      color:white;
+  }
+  .card-rounded-span {
+      width: fit-content;
+      min-width: 70px;
+      padding: 2px 10px;
+      border-radius: 40px;
+      background-color: rgba(93, 134, 158, 0.466);
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }
+  
+  .option-button {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+  }
+  
+  .option-button>img {
+      width: 30px;
+      height: 30px;
+  }
+  
+  
+  .transactionsContainer {
+      height: 100px;
+      overflow: scroll;
+  }
+  
+  #card1, #card2{
+      overflow: hidden;
+      height: 90vh;
+  }
+  
+  .list-group-item{
+    border: none;
+    background-color: #ffffff00;
+    color: #f8f9fa;
+    overflow-wrap: break-word;
+    width: inherit;
+  }
+  
+  .list-group{
+      overflow: scroll;
+      border: none;
+      background-color: none;
+      height: 90vh;
+  }
+  
+  .sidebar{
+      background-color: aqua;
+  }
+  
+  /* Style for Webkit (Chrome, Safari) */
+  ::-webkit-scrollbar {
+      width: 5px;
+      /* Width of the vertical scroll bar */
+      height: 5px;
+      /* Height of the horizontal scroll bar */
+  }
+  
+  ​ ::-webkit-scrollbar-thumb {
+      background-color: #888;
+      /* Color of the scroll bar thumb */
+      border-radius: 5px;
+      /* Rounded corners */
+  }
+  
+  .card{
+      background-color: rgba(193,128,221,0.5);
+      border-radius: 30px;
+      border: 0.5px solid rgb(207, 207, 207);
+      box-shadow: 0px 0px 5px black;
+  }
+  
+  .card-body{
+      background-color: none;
+  }
+  
+  .btn{
+      border-radius: 30px;
+      color: white;
+      border: 1px solid #bbb !important;
+  }
+  
+  .dropdown-toggle, .btn-warning{
+      background-color: #621d97;
+  }
+  
+  .btn-danger{
+     background-color: #8c2bdb;
+  }
+  
+  .card-rounded-span{
+      background-color: white;
+      box-shadow: 2px 2px 5px black;
+  }
+  
+  #accountBalance{
+      background-color: #4e08a7;
+      padding: 10px 30px;
+      color: white;
+      border: 1px solid #bbb !important;
+      border-radius: 20px;
+  }
+  
+  .btn-primary{
+      background-color: #bc0ab8;
+      width: 100%;
+  }
+  
+  input[type=text], input[type=password]{
+      border-radius: 30px;
+  }
+  
+  .tnxContainer{
+      border-radius: 30px;
+      overflow: hidden;
+      padding: 0px;
+      margin-top: auto;
+  }
+  .tnxHeader{
+      background-color: rgba(118,55,190, 0.8);
+      display: flex;
+      align-items: center;
+      color: white;
+      padding: 5px 15px;
+  }
+  
+  .tnxBorder{
+      background-color: rgba(204, 136, 233, 0.5);
+  }
+  
+  .tnx{
+      border: 1px solid white;
+      margin-top: 15px;
+      width:96%;
+      margin-left: 2%;
+      padding:5px 0px 15px 0px;
+  }
+  
+  .badge{
+     padding:10px 15px;
+     background-color: #4e08a7;
+     border: 1px solid white;
+     border-radius: 10px;
+  }
+  
+  /* Style for Webkit (Chrome, Safari) */
+  .badge::-webkit-scrollbar {
+    width: 0px;
+    /* Width of the vertical scroll bar */
+    height: 0px;
+    /* Height of the horizontal scroll bar */
+}
+
+​ .badge::-webkit-scrollbar-thumb {
+    background-color: #888;
+    /* Color of the scroll bar thumb */
+    border-radius: 0px;
+    /* Rounded corners */
+}
+  #rotateIcon::before{
+      rotate: 180deg;
+  }
