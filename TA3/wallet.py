@@ -69,12 +69,12 @@ class Wallet():
             "time": time.time()
         })
         
-    # SA3: Add filter parameter
+    #  Add filter parameter
     def getTransactions(self, address, currencyType, filter):
         asSender = list(db.reference('transactions/').order_by_child('from').equal_to(address).get().values())
         asReceiver = list(db.reference('transactions/').order_by_child('to').equal_to(address).get().values())
         allUserTnx = asSender + asReceiver
-        # SA3: Check filter and set allUserTnx if its value is 'sent' then store asSender transactions in allUserTnx 
+        #  Check filter and set allUserTnx if its value is 'sent' then store asSender transactions in allUserTnx 
         # elseif check if the its value is 'received' then store asReceiver transactions in allUserTnx
         if(filter == 'sent'):
             allUserTnx = asSender
