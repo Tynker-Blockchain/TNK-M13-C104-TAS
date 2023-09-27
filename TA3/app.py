@@ -26,7 +26,7 @@ tnxAmount = None
 paymentStatus = None
 
 currencyType = 'ethereum'
-# SA3: Create filter variable and initialize it to 'all'
+#  Create filter variable and initialize it to 'all'
 filter = 'all'
 
 def firebaseInitialization():
@@ -38,7 +38,7 @@ firebaseInitialization()
 
 @app.route("/", methods= ["GET", "POST"])
 def home():
-    # SA3: Access filter as global
+    #  Access filter as global
     global myWallet, account, allAccounts, isSignedIn, receiverAddress, tnxAmount, currencyType, filter
     isConnected = myWallet.checkConnection()
    
@@ -57,12 +57,12 @@ def home():
             address = 0
             if(type(account) == dict):
                 balance = myWallet.getBalance(account['address'], currencyType)
-                # SA3: Pass filter as third parameter
+                #  Pass filter as third parameter
                 transactions = myWallet.getTransactions(account['address'], currencyType, filter)
                 address= account['address']
             else:
                 balance = myWallet.getBalance(account.address, currencyType)
-                # SA3: Pass filter as third parameter
+                #  Pass filter as third parameter
                 transactions = myWallet.getTransactions(account.address, currencyType, filter)
                 address= account.address
 
@@ -248,15 +248,15 @@ def changeCurrency():
     currencyType = request.args.get("currency")
     return redirect('/')
 
-# SA3: Create changeFilter route to handle get request
+#  Create changeFilter route to handle get request
 @app.route('/changeFilter', methods= ["GET"])
-# SA3: Define changeFilter() function
+#  Define changeFilter() function
 def changeFilter():
-    # SA3: Access filter as global
+    #  Access filter as global
     global filter
-    # SA3: Access filter argument and store it in filter variable
+    #  Access filter argument and store it in filter variable
     filter = request.args.get("filter")
-    # SA3: Redirect to '/'
+    #  Redirect to '/'
     return redirect('/')
 
 if __name__ == '__main__':
